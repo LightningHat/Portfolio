@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumit Chatterjee | Edge AI & Embedded Systems Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP & ScrollTrigger & Lenis Smooth Scroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <!-- Vanilla Tilt for 3D Cards -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#00f2fe',
+                        secondary: '#4facfe',
+                        accent: '#7000ff',
+                        dark: '#050508',
+                        card: 'rgba(17, 17, 26, 0.7)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050508;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00f2fe;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(0, 242, 254, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(17, 18, 28, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-hover:hover {
+            border-color: rgba(0, 242, 254, 0.4);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.15);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Hide cursor on touch devices */
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-black">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Interactive Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass py-4 px-6 md:px-16 flex justify-between items-center transition-all duration-300">
+        <a href="#" class="font-display font-bold text-2xl tracking-wider text-white">
+            SC<span class="text-cyan-400">.</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
+            <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+            <a href="#skills" class="hover:text-cyan-400 transition-colors">Skills</a>
+            <a href="#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+            <a href="#experience" class="hover:text-cyan-400 transition-colors">Experience</a>
+            <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+        </div>
+        <a href="mailto:Sumitchatterjee.work@gmail.com" class="magnetic-btn px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-semibold text-sm hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] transition-all">
+            Hire Me
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 md:px-16 pt-20 relative">
+        <div class="max-w-5xl w-full text-center md:text-left">
+            <div class="inline-block px-4 py-1.5 rounded-full glass text-cyan-400 text-xs font-mono uppercase tracking-widest mb-6 gs-reveal">
+                <i class="fas fa-microchip mr-2"></i>Edge AI • Embedded Systems • Prompt Engineering
+            </div>
+            <h1 class="font-display text-5xl md:text-8xl font-bold tracking-tight leading-none mb-6 gs-reveal">
+                SUMIT <br class="md:hidden" />
+                <span class="text-gradient">CHATTERJEE</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed gs-reveal">
+                Final-year ECE undergraduate bridging complex hardware architectures with lightweight Edge AI, cloud pipelines, and AI-assisted workflows.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center md:justify-start gs-reveal">
+                <a href="#projects" class="magnetic-btn px-8 py-4 rounded-full bg-white text-black font-display font-semibold hover:bg-cyan-400 transition-colors flex items-center gap-2">
+                    View Projects <i class="fas fa-arrow-down text-sm"></i>
+                </a>
+                <a href="https://github.com/LightningHat" target="_blank" class="magnetic-btn px-8 py-4 rounded-full glass text-white font-display font-semibold hover:border-cyan-400 transition-all flex items-center gap-2">
+                    <i class="fab fa-github text-lg"></i> GitHub
+                </a>
+                <a href="https://linkedin.com/in/sumit-chatterjee" target="_blank" class="magnetic-btn px-6 py-4 rounded-full glass text-white hover:border-blue-400 transition-all flex items-center">
+                    <i class="fab fa-linkedin-in text-lg"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 animate-bounce text-gray-500 text-sm font-mono">
+            Scroll to explore
+        </div>
+    </section>
+
+    <!-- About & Stats Section -->
+    <section id="about" class="py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-7 space-y-6 gs-fade-up">
+                <h2 class="font-display text-3xl md:text-5xl font-bold">
+                    Engineering Intelligence <span class="text-cyan-400">at the Edge.</span>
+                </h2>
+                <p class="text-gray-400 leading-relaxed">
+                    Based in Kolkata, West Bengal, I am a 7th-semester Electronics and Communication Engineering student at the Academy of Technology. I specialize in taking heavy software concepts and optimizing them for constrained hardware environments like the ESP32-S3.
+                </p>
+                <p class="text-gray-400 leading-relaxed">
+                    Alongside deep tech, I possess strong verbal and written English communication skills—leading media strategies for IEEE and pitching rapid prototypes at major hackathons like <strong>Hack4Bengal, Statuscode, and Frosthacks 1.0</strong>.
+                </p>
+            </div>
+            <div class="md:col-span-5 grid grid-cols-2 gap-4 gs-fade-up">
+                <div class="glass p-6 rounded-2xl text-center tilt-card">
+                    <div class="text-4xl font-display font-bold text-cyan-400 mb-2">TinyML</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Edge AI Focus</div>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center tilt-card">
+                    <div class="text-4xl font-display font-bold text-purple-400 mb-2">3+</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Major Hackathons</div>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center tilt-card">
+                    <div class="text-4xl font-display font-bold text-blue-400 mb-2">IoT</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Cloud Pipelines</div>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center tilt-card">
+                    <div class="text-4xl font-display font-bold text-emerald-400 mb-2">IEEE</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Media Lead</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <h2 class="font-display text-3xl md:text-5xl font-bold mb-16 text-center gs-fade-up">
+            Technical <span class="text-gradient">Arsenal</span>
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass glass-hover p-8 rounded-3xl tilt-card gs-fade-up">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl mb-6">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-4">AI & Methodologies</h3>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>• Prompt & Context Engineering</li>
+                    <li>• AI-Assisted Workflows</li>
+                    <li>• TinyML & TensorFlow Lite Micro</li>
+                    <li>• 1D CNN Model Deployment</li>
+                    <li>• Agile Problem Solving</li>
+                </ul>
+            </div>
+
+            <div class="glass glass-hover p-8 rounded-3xl tilt-card gs-fade-up">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-4">IoT & Architecture</h3>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>• ESP32 / ESP32-S3 SoC</li>
+                    <li>• Multi-Sensor Fusion (IMU, GPS)</li>
+                    <li>• Firebase Cloud Integration</li>
+                    <li>• GSM SMS & Webhook Alerts</li>
+                    <li>• Low-Power Standalone Systems</li>
+                </ul>
+            </div>
+
+            <div class="glass glass-hover p-8 rounded-3xl tilt-card gs-fade-up">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-2xl mb-6">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-4">Programming & Web</h3>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>• Python & Embedded C</li>
+                    <li>• Frontend Data Dashboards</li>
+                    <li>• Git & Version Control</li>
+                    <li>• HTTPS / Twilio Webhooks</li>
+                </ul>
+            </div>
+
+            <div class="glass glass-hover p-8 rounded-3xl tilt-card gs-fade-up">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-2xl mb-6">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-4">Business & Comm</h3>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>• Pitching Value Propositions</li>
+                    <li>• Technical Documentation</li>
+                    <li>• Cross-functional Leadership</li>
+                    <li>• English, Bengali, Hindi</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured & GitHub Projects Section -->
+    <section id="projects" class="py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gs-fade-up">
+            <div>
+                <span class="text-cyan-400 font-mono text-sm uppercase tracking-widest">Portfolio</span>
+                <h2 class="font-display text-3xl md:text-5xl font-bold mt-2">Featured <span class="text-gradient">Architecture</span></h2>
+            </div>
+            <a href="https://github.com/LightningHat" target="_blank" class="text-sm text-gray-400 hover:text-cyan-400 mt-4 md:mt-0 flex items-center gap-2">
+                View all on GitHub <i class="fas fa-external-link-alt"></i>
+            </a>
+        </div>
+
+        <!-- Resume Flagship Projects -->
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <!-- Project 1 -->
+            <div class="glass glass-hover rounded-3xl p-8 md:p-10 tilt-card gs-fade-up flex flex-col justify-between relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono">Final Year Project</span>
+                        <span class="text-gray-500 text-xs font-mono">Guided by Prof. S. Bose</span>
+                    </div>
+                    <h3 class="font-display text-2xl md:text-3xl font-bold mb-4 group-hover:text-cyan-400 transition-colors">
+                        Intelligent Vehicle Crash Detection System
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Upgraded a legacy laptop-dependent prototype into a fully autonomous, on-device Edge AI crash detection system running entirely on an <strong>ESP32-S3 SoC</strong>.
+                    </p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-8">
+                        <li><i class="fas fa-check text-cyan-400 mr-2"></i><strong>1D CNN TinyML Model:</strong> Real-time driving event classification under strict hardware constraints.</li>
+                        <li><i class="fas fa-check text-cyan-400 mr-2"></i><strong>Sensor Fusion:</strong> Accelerometer, Gyroscope & live GPS tracking.</li>
+                        <li><i class="fas fa-check text-cyan-400 mr-2"></i><strong>Dual-Path Alerting:</strong> Wi-Fi/HTTPS Webhooks (Twilio/WhatsApp) + GSM SMS fallback.</li>
+                    </ul>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10 text-xs font-mono text-gray-400">
+                    <span>#ESP32-S3</span> <span>#TinyML</span> <span>#1D-CNN</span> <span>#Twilio</span> <span>#SensorFusion</span>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="glass glass-hover rounded-3xl p-8 md:p-10 tilt-card gs-fade-up flex flex-col justify-between relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all"></div>
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-mono">IoT & Cloud Architecture</span>
+                        <span class="text-gray-500 text-xs font-mono">End-to-End Pipeline</span>
+                    </div>
+                    <h3 class="font-display text-2xl md:text-3xl font-bold mb-4 group-hover:text-purple-400 transition-colors">
+                        Standalone IoT Weather Station
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Designed and built a low-power, mains-independent weather monitoring module capable of remote outdoor deployment with real-time cloud visualization.
+                    </p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-8">
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i><strong>Embedded Integration:</strong> Multi-variable environmental sensors wired to an ESP32 platform.</li>
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i><strong>Firebase Backend:</strong> Seamless real-time telemetry ingestion and storage.</li>
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i><strong>Live Dashboard:</strong> Custom frontend interface to fetch and visualize historical and live cloud data.</li>
+                    </ul>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10 text-xs font-mono text-gray-400">
+                    <span>#ESP32</span> <span>#Firebase</span> <span>#IoT</span> <span>#FrontendDashboard</span> <span>#LowPower</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic GitHub Repositories -->
+        <div class="mt-20">
+            <h3 class="font-display text-2xl font-bold mb-8 flex items-center gap-3 gs-fade-up">
+                <i class="fab fa-github text-cyan-400"></i> Live from GitHub <span class="text-xs font-mono font-normal px-2.5 py-1 rounded bg-white/10 text-gray-300">@LightningHat</span>
+            </h3>
+            <div id="github-repos" class="grid md:grid-cols-3 gap-6">
+                <!-- Dynamically populated via JS -->
+                <div class="glass p-6 rounded-2xl animate-pulse h-48 flex items-center justify-center text-gray-500 text-sm">
+                    Fetching repositories from GitHub...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Education Timeline -->
+    <section id="experience" class="py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16">
+            
+            <!-- Experience -->
+            <div>
+                <h2 class="font-display text-3xl font-bold mb-10 flex items-center gap-3 gs-fade-up">
+                    <i class="fas fa-briefcase text-cyan-400"></i> Leadership & Experience
+                </h2>
+                <div class="space-y-8 border-l-2 border-white/10 pl-6 relative">
+                    
+                    <div class="relative gs-fade-up">
+                        <div class="w-4 h-4 rounded-full bg-cyan-400 absolute -left-[33px] top-1 shadow-[0_0_15px_#00f2fe]"></div>
+                        <span class="text-xs font-mono text-cyan-400">2025 - Present</span>
+                        <h3 class="font-display text-xl font-bold mt-1">Media Lead — IEEE Student Branch</h3>
+                        <p class="text-xs text-gray-400 mb-3">Academy of Technology, Hooghly</p>
+                        <p class="text-sm text-gray-400">Directing end-to-end media coverage and promotional strategies for technical events, translating complex technical concepts into high-engagement content.</p>
+                    </div>
+
+                    <div class="relative gs-fade-up">
+                        <div class="w-4 h-4 rounded-full bg-purple-400 absolute -left-[33px] top-1"></div>
+                        <span class="text-xs font-mono text-purple-400">Oct 2024 - Present</span>
+                        <h3 class="font-display text-xl font-bold mt-1">Tech Team — Students' Chapter ECE (IEI)</h3>
+                        <p class="text-xs text-gray-400 mb-3">Academy of Technology, Hooghly</p>
+                        <p class="text-sm text-gray-400">Driving collaborative event execution, taking ownership of technical setups, on-site troubleshooting, and operational support.</p>
+                    </div>
+
+                    <div class="relative gs-fade-up">
+                        <div class="w-4 h-4 rounded-full bg-blue-400 absolute -left-[33px] top-1"></div>
+                        <span class="text-xs font-mono text-blue-400">Hackathon Circuit</span>
+                        <h3 class="font-display text-xl font-bold mt-1">Hack4Bengal, Statuscode, Frosthacks 1.0</h3>
+                        <p class="text-sm text-gray-400 mt-2">Built functional tech prototypes under strict time constraints using AI-assisted workflows and pitched compelling value propositions to judging panels.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Education & Workshops -->
+            <div>
+                <h2 class="font-display text-3xl font-bold mb-10 flex items-center gap-3 gs-fade-up">
+                    <i class="fas fa-graduation-cap text-purple-400"></i> Education & Workshops
+                </h2>
+                <div class="space-y-8 border-l-2 border-white/10 pl-6 relative">
+                    
+                    <div class="relative gs-fade-up">
+                        <div class="w-4 h-4 rounded-full bg-purple-400 absolute -left-[33px] top-1 shadow-[0_0_15px_#a855f7]"></div>
+                        <span class="text-xs font-mono text-purple-400">Aug 2023 - Present (7th Sem)</span>
+                        <h3 class="font-display text-xl font-bold mt-1">B.Tech in Electronics & Communication</h3>
+                        <p class="text-sm text-gray-400">Academy of Technology, Hooghly, West Bengal</p>
+                    </div>
+
+                    <div class="relative gs-fade-up">
+                        <div class="w-4 h-4 rounded-full bg-gray-600 absolute -left-[33px] top-1"></div>
+                        <span class="text-xs font-mono text-gray-400">Apr 2021 - Mar 2023</span>
+                        <h3 class="font-display text-lg font-bold mt-1">High School (Class 12)</h3>
+                        <p class="text-sm text-gray-400">GD Goenka Public School, Dakshineswar, Kolkata</p>
+                        <p class="text-xs text-gray-500 mt-1">Class 10: Delhi Public School North, Kolkata</p>
+                    </div>
+
+                    <div class="glass p-6 rounded-2xl gs-fade-up mt-6">
+                        <h4 class="font-display font-bold text-sm uppercase tracking-wider text-cyan-400 mb-4">Workshops & Certifications</h4>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex justify-between">
+                                <span><strong>Artificial Intelligence</strong> — IIT Bombay (Mood Indigo & Acmegrade)</span>
+                                <span class="text-xs font-mono text-gray-500">Mar 2024</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Ethical Hacking</strong> — IIT Bhubaneswar (Alma Fiesta)</span>
+                                <span class="text-xs font-mono text-gray-500">Mar 2024</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 md:px-16 max-w-5xl mx-auto text-center">
+        <div class="glass p-12 md:p-20 rounded-3xl relative overflow-hidden gs-fade-up">
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+            
+            <span class="text-cyan-400 font-mono text-sm uppercase tracking-widest">What's Next?</span>
+            <h2 class="font-display text-4xl md:text-6xl font-bold mt-4 mb-6">Let's Build Something <span class="text-gradient">Intelligent.</span></h2>
+            <p class="text-gray-400 max-w-xl mx-auto mb-10">
+                Whether you're looking for an Embedded Systems/Edge AI intern, a hackathon collaborator, or a full-time engineer, my inbox is open.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="mailto:Sumitchatterjee.work@gmail.com" class="magnetic-btn px-8 py-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-display font-bold hover:shadow-[0_0_30px_rgba(0,242,254,0.6)] transition-all">
+                    <i class="fas fa-envelope mr-2"></i> Sumitchatterjee.work@gmail.com
+                </a>
+                <a href="tel:+919875473513" class="magnetic-btn px-8 py-4 rounded-full glass text-white font-display font-semibold hover:border-cyan-400 transition-all">
+                    <i class="fas fa-phone mr-2 text-cyan-400"></i> +91 9875473513
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center text-xs text-gray-600 font-mono border-t border-white/5">
+        Designed & Engineered for Sumit Chatterjee • Kolkata, India
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Custom Cursor & Magnetic Buttons
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            cursorOutline.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 400, fill: "forwards" });
+        });
+
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
+            });
+        });
+
+        // 3. GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.from(".gs-reveal", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out",
+            delay: 0.2
+        });
+
+        gsap.utils.toArray('.gs-fade-up').forEach(elem => {
+            gsap.from(elem, {
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.9,
+                ease: "power3.out"
+            });
+        });
+
+        // 4. Initialize 3D Tilt
+        VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
+            max: 8,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.15,
+        });
+
+        // 5. Fetch GitHub Projects Automatically (@LightningHat)
+        async function fetchGitHubRepos() {
+            const container = document.getElementById('github-repos');
+            try {
+                const response = await fetch('https://api.github.com/users/LightningHat/repos?sort=updated&per_page=6');
+                const repos = await response.json();
+                
+                if (!Array.isArray(repos) || repos.length === 0) {
+                    container.innerHTML = `<p class="text-gray-400 col-span-3">Visit <a href="https://github.com/LightningHat" class="text-cyan-400 underline">github.com/LightningHat</a> to view public repositories.</p>`;
+                    return;
+                }
+
+                container.innerHTML = repos.filter(r => !r.fork).slice(0, 6).map(repo => `
+                    <a href="${repo.html_url}" target="_blank" class="glass glass-hover p-6 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-2 group">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <i class="far fa-folder-open text-2xl text-cyan-400"></i>
+                                <div class="flex items-center gap-3 text-xs text-gray-400">
+                                    <span><i class="far fa-star mr-1"></i>${repo.stargazers_count}</span>
+                                    <span><i class="fas fa-code-branch mr-1"></i>${repo.forks_count}</span>
+                                </div>
+                            </div>
+                            <h4 class="font-display font-bold text-lg group-hover:text-cyan-400 transition-colors mb-2 truncate">${repo.name}</h4>
+                            <p class="text-xs text-gray-400 line-clamp-3 mb-4">${repo.description || 'Hardware/Software engineering repository by Sumit Chatterjee.'}</p>
+                        </div>
+                        <div class="flex justify-between items-center text-xs font-mono text-gray-500 pt-3 border-t border-white/5">
+                            <span>${repo.language || 'Code'}</span>
+                            <span class="group-hover:text-white transition-colors">View Repo →</span>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = `<p class="text-gray-400">Unable to load live feed. Check out <a href="https://github.com/LightningHat" class="text-cyan-400 underline">github.com/LightningHat</a>.</p>`;
+            }
+        }
+        fetchGitHubRepos();
+
+        // 6. Interactive Circuit/Node Canvas Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f2fe';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 65; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 242, 254, ${1 - dist / 130})`;
+                        ctx.lineWidth = 0.4;
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+    </script>
+</body>
+</html>
